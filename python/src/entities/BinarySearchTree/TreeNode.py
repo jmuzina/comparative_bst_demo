@@ -74,6 +74,22 @@ class TreeNode:
         # Since we assume that all node values are unique, all we need to know is whether the values are equal
         return a.val == b.val
     
+    def preprocess_val_for_report(self, val: int) -> str:
+        """Preprocesses a value for printing in the report.
+
+        Args:
+            val (int): The value to preprocess.
+
+        Returns:
+            str: The preprocessed value.
+        """
+        retVal = str(val)
+        
+        # Surround negative values in parentheses
+        if val < 0:
+            retVal = f"({retVal})"
+        
+        return retVal
     def print_report(self, depth = 0):
         """Prints the node and its descendants in pre-order traversal.
 
@@ -90,7 +106,7 @@ class TreeNode:
         prefix_tree_lines = '-' * self.depth * 2
         
         # printed string starts off with the prefix tree lines and the value of the node
-        print_str = F"{prefix_tree_lines}{str(self.val)}"
+        print_str = F"{prefix_tree_lines}{self.preprocess_val_for_report(self.val)}"
         
         # Add some subtext to the printed string to indicate if the node is the root or a leaf
         if (self.is_root()):
@@ -213,9 +229,15 @@ class TreeNode:
             TreeNode: Node with `val`=`val`, if found. Else, `None`.
         """
         
+        assert self is not None, "Cannot search a null tree."
+        
         # Base case 1: This node has the value we're looking for! Return it.
         if self.val == val:
             return self
+        
+        subtree = self.left if val < self.val else self.right
+        if subtree is None and not self.is_leaf():
+            print("something is wrong")
         
         # Base case 2: This node is a leaf node. This branch of the search is over, return None.
         if self.is_leaf():
@@ -223,6 +245,12 @@ class TreeNode:
         
         # Recursive case: Search the left or right subtree depending on numeric comparison
         subtree = self.left if val < self.val else self.right
+        
+        # If the subtree is None and we've gotten this far, the node only has one child, but that child mathematically cannot have the value we're looking for.
+        # So the value is not in the tree.
+        if subtree is None:
+            return None
+        
         return subtree.search(val)
 
     def __init__(self, val: int, parent: 'TreeNode' = None, depth: int = 0, left: 'TreeNode' = None, right: 'TreeNode' = None):

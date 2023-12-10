@@ -1,6 +1,6 @@
 from typing import List, Generic, TypeVar
-from abc import ABC, abstractmethod
-from util.str import safe_str_to_int
+from abc import ABC
+import sys
 
 T = TypeVar('T')
 
@@ -9,20 +9,19 @@ class DialogueNode(ABC, Generic[T]):
     prompt: str = ""
     parent: 'DialogueNode' = None
     exit_cmd: str = "exit"
+    back_cmd: str = "back"
     active: bool = False
     
-    def print_after_input(self, user_input: T):
+    def on_input_received(self, user_input: T):
         # do nothing, allow children to override
-        pass
-    
-    def receive_input_from_child(self, child: 'DialogueNode', child_output: T):
-        # do nothing, allow child to override
         pass
     
     def go_back(self):
         self.exit()
         if self.parent is not None:
             self.parent.input_loop()
+        else:
+            sys.exit(0)
     
     def exit(self):
         self.active = False
@@ -33,26 +32,32 @@ class DialogueNode(ABC, Generic[T]):
             print(f"{i+1}:\t{self.options[i].title}")
            
     def prompt_for_input(self) -> str:
-        print(self.prompt)
+        print(f"{self.title}:\t{self.prompt}")
+        return input(f"\t{self.get_prompt_text()}: ")
         
     def transform_input_to_generic_type(self, user_input: str) -> T:
+        # child classes extend this functionality to actually transform input to generic type
         return None
+    
+    def get_prompt_text(self) -> str:
+        return "Please make a selection"
             
     def input_loop(self) -> str: 
         self.active = True
-        user_input = self.prompt_for_input()
+        user_input = self.prompt_for_input().strip()
+        if user_input == self.exit_cmd:
+            return sys.exit(0)
+        if user_input == self.back_cmd:
+            return self.go_back()
         
         while not self.validate_input(user_input): 
-            user_input = self.prompt_for_input()
+            user_input = self.prompt_for_input().strip()
             if user_input == self.exit_cmd:
+                return sys.exit(0)
+            if user_input == self.back_cmd:
                 return self.go_back()
             
-        transformed_val: T = self.transform_input_to_generic_type(user_input)
-            
-        self.print_after_input(transformed_val)
-            
-        if self.parent is not None:
-            self.parent.receive_input_from_child(self, transformed_val)
+        self.on_input_received(self.transform_input_to_generic_type(user_input))
             
         return user_input
     

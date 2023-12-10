@@ -22,11 +22,18 @@ class IntegerDialogueNode(DialogueNode[List[int]], ABC):
         self.max = max
         
     def transform_input_to_generic_type(self, user_input: str) -> List[int]:
-        return [int(token) for token in user_input.split(" ")]
+        return [int(token.lower().strip()) for token in user_input.split(" ") if token is not None and len(token) > 0]
     
-        
     def validate_input(self, user_input: str) -> bool:
+        if user_input == self.exit_cmd:
+            return True
+        
         tokens: List[str] = user_input.split()
+        
+        if len(tokens) == 0:
+            print("Invalid input: No tokens found.")
+            return False
+        
         for token in tokens:
             token_as_int = safe_str_to_int(token)
             if token_as_int is None:
@@ -34,9 +41,8 @@ class IntegerDialogueNode(DialogueNode[List[int]], ABC):
                 return False
         
         return True
-        
-    def prompt_for_input(self) -> str:
-        super().prompt_for_input()
+
+    def get_prompt_text(self) -> str:
         prompt_str = "Enter a space-separated list of integers"
         if self.min is not None or self.max is not None:
             prompt_str += " where each integer is"
@@ -47,8 +53,11 @@ class IntegerDialogueNode(DialogueNode[List[int]], ABC):
                     prompt_str += f" Greater than or equal to {self.min}"
             else:
                 prompt_str += f" Less than or equal to {self.max}"
+                
             
-            
-        prompt_str += f" or enter \"{self.exit_cmd}\" to exit: "
+        prompt_str += f", enter \"{self.exit_cmd}\" to exit"
         
-        return input(prompt_str)
+        if self.parent is not None:
+            prompt_str += f", or \"{self.back_cmd}\" to go back to {self.parent.title}"
+            
+        return prompt_str
