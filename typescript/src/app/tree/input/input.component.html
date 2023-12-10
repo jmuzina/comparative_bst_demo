@@ -24,7 +24,7 @@
                     <p-button pRipple icon="pi pi-minus" class="remove-control-button-wrapper"
                         styleClass="p-button-danger remove-control-button" (click)="removeControl(i)"
                         pTooltip="Remove node {{i + 1}}"></p-button>
-                    <p-inputNumber class="node-value-input-wrapper" styleClass="node-value-input"
+                    <p-inputNumber class="node-value-input-wrapper" [styleClass]="inputClass"
                         formControlName="{{i | toString }}" [min]="min" [max]="max" [placeholder]="'Node ' + (i + 1)" (keydown.enter)="addAndFocusNewControl()" />
 
                 </div>

@@ -151,8 +151,19 @@ export class TreeNode {
         return {
             label: this.val.toString(),
             data: this,
-            expanded: this.depth < 4,
+            expanded: true,
+            styleClass: this.getDOMClass(),
             children: this.children().map(child => child.toPrimeTreeNode())
         }
+    }
+
+    getDOMClass(): string {
+        return `orgchart-item-${this.val.toString()}`   
+    }
+
+    getDOMNode(): HTMLDivElement | null {
+        const matchingDOMNodes = document.getElementsByClassName(this.getDOMClass());
+        if (!matchingDOMNodes?.length) return null;
+        return matchingDOMNodes[0] as HTMLDivElement;
     }
 }

@@ -1,0 +1,28 @@
+.search-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+:host ::ng-deep .search-main {
+    border-top: 1px solid var(--primary-color);
+    .search-container {
+        margin-top: 2em;
+
+        span.input-wrapper {
+            p-inputnumber.input-exterior {
+                span.input-interior {
+                    &, input.p-inputnumber-input {
+                        border-radius: var(--border-radius) 0 0 var(--border-radius);
+                    }
+                }
+            }
+        }
+        p-button.search-submit-button-wrapper {
+            button.search-submit-button {
+                border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            }
+        }
+    }
+}

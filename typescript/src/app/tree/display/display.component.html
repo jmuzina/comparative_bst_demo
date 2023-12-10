@@ -1,2 +1,4 @@
-
- <p-organizationChart *ngIf="data" [value]="data"></p-organizationChart>
+<ng-container *ngIf="tree">
+    <jm-search [tree]="tree" (search)="onSearch($event)" />
+    <p-organizationChart *ngIf="data" [value]="data"></p-organizationChart>
+</ng-container>

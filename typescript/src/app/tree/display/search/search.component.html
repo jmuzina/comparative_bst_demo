@@ -1,0 +1,25 @@
+
+<p>Enter an integer into the Search field to search for the node with the matching value.<br>If one is found, it will be highlighted.</p>
+<div class="search-main">
+    <div class="search-container">
+        <span class="p-float-label input-wrapper">
+            <p-inputNumber 
+                class="input-exterior" 
+                styleClass="input-interior" 
+                id="search-input" 
+                [(ngModel)]="liveSearchValue" 
+                icon="pi pi-search"
+                (keydown.enter)="performSearch(liveSearchValue)"
+            />
+            <label for="search-input">{{placeholder}}</label>
+        </span>
+        <p-button 
+            class="search-submit-button-wrapper" 
+            styleClass="search-submit-button" 
+            pTooltip="Search a node within the BST" 
+            (click)="performSearch(liveSearchValue)" 
+            [disabled]="!liveSearchValue && liveSearchValue !== 0" 
+            icon="pi pi-search"
+        />
+    </div>
+</div>

@@ -1,10 +1,10 @@
 <p-tabView [(activeIndex)]="activeIndex" [attr.active-index]="activeIndex">
     <p-tabPanel header="Input">
-        <app-input [tree]="tree" (treeChange)="onTreeChange($event)" />
+        <jm-input [tree]="tree" (treeChange)="onTreeChange($event)" />
     </p-tabPanel>
     <ng-container *ngIf="tree">
         <p-tabPanel header="View">
-            <app-display [tree]="tree"/>
+            <jm-display [tree]="tree"/>
         </p-tabPanel>
     </ng-container>
 </p-tabView>

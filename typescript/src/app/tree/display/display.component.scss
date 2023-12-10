@@ -1,0 +1,16 @@
+:host ::ng-deep .p-organizationchart-node-content {
+    &.highlighted {
+        scale: transform(1.1);
+        border: 1px solid var(--primary-color);
+        border-radius: var(--border-radius);
+    }
+
+    & {
+        transition: scale 1s ease-in-out;
+    }
+
+}
+
+:host ::ng-deep .p-organizationchart {
+    margin-top: 1rem;
+}

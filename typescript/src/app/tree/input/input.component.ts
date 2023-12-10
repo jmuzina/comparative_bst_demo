@@ -3,7 +3,7 @@ import { TreeNode } from '../../../entities/TreeNode';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-input',
+  selector: 'jm-input',
   templateUrl: './input.component.html',
   styleUrl: './input.component.scss'
 })
@@ -14,14 +14,20 @@ export class InputComponent implements OnInit {
   @Input() min?: number;
   @Input() max?: number;
 
-  controlsKey = 'node_values';
+  /** Key of formgroup containing the formarray of user-entered node values */
+  controlsKey = 'node-values';
+  /** Class of input fields for entering node values */
   inputClass = 'node-value-input';
 
+  /** Form group for input validation & handling */
   form?: FormGroup;
 
+  /**
+   * Gets an initial state for the form group
+   */
   private getInitialForm(): FormGroup {
     return this._fb.group({
-      node_values: this._fb.array([], [Validators.required, Validators.minLength(1)])
+      [this.controlsKey]: this._fb.array([], [Validators.required, Validators.minLength(1)])
     })
   }
 
@@ -122,21 +128,34 @@ export class InputComponent implements OnInit {
     }, 50);
   }
 
+  /**
+   * Handle a submission from the HTML form
+   * If the form is valid, converts the input integers into a BST and emits the tree to the parent component
+   */
   onSubmit(): void {
     if (!this.form?.valid) return;
 
     const nodeValues: FormArray = this.form?.get(this.controlsKey) as FormArray;
+    // Get the values from the form, filter out duplicates, and sort them
     const nodeValuesUniqueSorted = nodeValues.value
       .filter((val: number, index: number, arr: number[]) => arr.indexOf(val) === index)
       .sort((a: number, b: number) => a - b);
 
+    // Construct a tree from the sorted list
     const tree = TreeNode.constructNodeFromList(nodeValuesUniqueSorted);
+
+    // Populate primeng-friendly node data
     if (tree) tree.populatePrimeNode();
+
+    // Emit the tree to the parent component
     this.treeChange.emit(tree || undefined);
   }
 
   ngOnInit(): void {
+    // Initialize the form
     this.form = this.getInitialForm();
+
+    // Add a single control to the page on first load, so user doesn't have to press 'add' to get started
     if (!this.tree) this.addControl();
   }
 

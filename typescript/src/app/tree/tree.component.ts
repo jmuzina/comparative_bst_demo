@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { TreeNode } from '../../entities/TreeNode';
 
 @Component({
-  selector: 'app-tree',
+  selector: 'jm-tree',
   templateUrl: './tree.component.html',
   styleUrl: './tree.component.scss'
 })
