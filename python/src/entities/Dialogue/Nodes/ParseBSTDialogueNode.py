@@ -21,5 +21,6 @@ class ParseBSTDialogueNode(IntegerDialogueNode):
         return user_input.print_report()
     
     def transform_input_to_generic_type(self, user_input: str) -> TreeNode:
-        user_input_integers = super().transform_input_to_generic_type(user_input)
+        # remove duplicates and sorts from least to greatest
+        user_input_integers = sorted(set(super().transform_input_to_generic_type(user_input)))
         return TreeNode.construct_node_from_list(user_input_integers)

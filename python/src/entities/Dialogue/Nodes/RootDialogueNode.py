@@ -8,8 +8,7 @@ class RootDialogueNode(OptionsDialogueNode[TreeNode]):
     root: 'TreeNode' = None
     
     def __init__(
-        self, 
-        options: List['DialogueNode'] = [], 
+        self
     ):
         super().__init__(
             prompt='Welcome to Julie\'s BST project. Please select an option:',

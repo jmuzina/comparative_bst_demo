@@ -1,6 +1,7 @@
 from entities.Dialogue.DialogueNode import DialogueNode
 from typing import List
 from abc import ABC
+from util.str import safe_str_to_int
 
 class IntegerDialogueNode(DialogueNode[List[int]], ABC):
     def __init__(
@@ -22,6 +23,17 @@ class IntegerDialogueNode(DialogueNode[List[int]], ABC):
         
     def transform_input_to_generic_type(self, user_input: str) -> List[int]:
         return [int(token) for token in user_input.split(" ")]
+    
+        
+    def validate_input(self, user_input: str) -> bool:
+        tokens: List[str] = user_input.split()
+        for token in tokens:
+            token_as_int = safe_str_to_int(token)
+            if token_as_int is None:
+                print(f"Invalid input: \"{token}\" is not an integer.")
+                return False
+        
+        return True
         
     def prompt_for_input(self) -> str:
         super().prompt_for_input()

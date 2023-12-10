@@ -11,18 +11,12 @@ class DialogueNode(ABC, Generic[T]):
     exit_cmd: str = "exit"
     active: bool = False
     
-    def validate_input(self, user_input: str) -> bool:
-        tokens: List[str] = user_input.split()
-        for token in tokens:
-            token_as_int = safe_str_to_int(token)
-            if token_as_int is None:
-                print(f"Invalid input: \"{token}\" is not an integer.")
-                return False
-        
-        return True
-    
     def print_after_input(self, user_input: T):
         # do nothing, allow children to override
+        pass
+    
+    def receive_input_from_child(self, child: 'DialogueNode', child_output: T):
+        # do nothing, allow child to override
         pass
     
     def go_back(self):
@@ -62,9 +56,8 @@ class DialogueNode(ABC, Generic[T]):
             
         return user_input
     
-    def receive_input_from_child(self, child: 'DialogueNode', child_output: T):
-        # do nothing, allow child to override
-        pass
+    def validate_input(self, user_input: str) -> bool:
+        return True
     
     def __init__(
         self, 
