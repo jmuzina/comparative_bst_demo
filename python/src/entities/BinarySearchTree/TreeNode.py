@@ -236,8 +236,6 @@ class TreeNode:
             return self
         
         subtree = self.left if val < self.val else self.right
-        if subtree is None and not self.is_leaf():
-            print("something is wrong")
         
         # Base case 2: This node is a leaf node. This branch of the search is over, return None.
         if self.is_leaf():
