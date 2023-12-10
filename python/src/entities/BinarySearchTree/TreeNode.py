@@ -184,13 +184,11 @@ class TreeNode:
         if self.val == val:
             return self
         
-        subtree = self.left if val < self.val else self.right
-        
         # Base case 2: This node is a leaf node. This branch of the search is over, return None.
         if self.is_leaf():
             return None
         
-        # Recursive case: Search the left or right subtree depending on numeric comparison
+        # Decide on left or right subtree based on numeric comparison
         subtree = self.left if val < self.val else self.right
         
         # If the subtree is None and we've gotten this far, the node only has one child, but that child mathematically cannot have the value we're looking for.
@@ -198,6 +196,7 @@ class TreeNode:
         if subtree is None:
             return None
         
+        # Recursive case: Search the appropriate subtree
         return subtree.search(val)
 
     def __init__(self, val: int, parent: 'TreeNode' = None, depth: int = 0, left: 'TreeNode' = None, right: 'TreeNode' = None):

@@ -1,0 +1,15 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    overflow: hidden;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    margin-top: auto;
+    overflow: auto;
+    flex: 1;
+}

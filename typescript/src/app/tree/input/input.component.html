@@ -1,0 +1,46 @@
+<form *ngIf="form && nodeControls()" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="input-summary">
+        <p>
+            Please input the integer values for the nodes in the tree.
+        </p>
+        <p>
+            You may use the + button to add new elements, or simply press the enter key after typing a value.
+        </p>
+        <ng-container *ngIf="(min || min === 0) || (max || max === 0)">
+            <p *ngIf="(min || min == 0) && !(max || max === 0)">
+                Values must be at least {{min | number : '1.0-0'}}.
+            </p>
+            <p *ngIf="(max || max === 0) && !(min || min === 0)">
+                Values must be at most {{max | number : '1.0-0'}}.
+            </p>
+            <p *ngIf="(min || min === 0) && (max || max === 0)">
+                Values must be between {{min | number : '1.0-0'}} and {{max | number : '1.0-0'}}.
+        </ng-container>
+    </div>
+    <div class="controls">
+        <ng-container *ngFor="let control of nodeArray().controls; index as i">
+            <div class="control-row" [formGroup]="nodeControls()" [attr.control-index]="i">
+                <div class="input-and-remove-btn">
+                    <p-button pRipple icon="pi pi-minus" class="remove-control-button-wrapper"
+                        styleClass="p-button-danger remove-control-button" (click)="removeControl(i)"
+                        pTooltip="Remove node {{i + 1}}"></p-button>
+                    <p-inputNumber class="node-value-input-wrapper" styleClass="node-value-input"
+                        formControlName="{{i | toString }}" [min]="min" [max]="max" [placeholder]="'Node ' + (i + 1)" (keydown.enter)="addAndFocusNewControl()" />
+
+                </div>
+                <ng-container *ngIf="getControl(i).errors && getControl(i).touched">
+                    <span class="error-message" *ngIf="getControl(i).errors?.['required']">Value is required</span>
+                    <span class="error-message" *ngIf="getControl(i).errors?.['min']">Value must be greater than or
+                        equal to {{min}}</span>
+                    <span class="error-message" *ngIf="getControl(i).errors?.['max']">Value must be less than or equal
+                        to {{max}}</span>
+                    <span class="error-message" *ngIf="getControl(i).errors?.['duplicateValue']">{{getControl(i).errors?.['duplicateValue'].value}}</span>
+                </ng-container>
+            </div>
+        </ng-container>
+        <p-button pRipple icon="pi pi-plus" styleClass="p-button-success" (click)="addControl()"
+            pTooltip="Add a new control"></p-button>
+    </div>
+    <p-button pRipple icon="pi pi-check" [disabled]="!form?.valid" pTooltip="Submit tree" type="submit"
+        label="Create BST"></p-button>
+</form>
