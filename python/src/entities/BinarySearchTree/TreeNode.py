@@ -1,19 +1,6 @@
 from typing import List
 from enum import Enum
 
-class NodeRelationship(Enum):
-    """Enum representing the relationship of one node to another."""
-    PARENT = 0
-    LEFT_CHILD = 1
-    RIGHT_CHILD = 2
-    LEFT_DESCENDANT = 3
-    RIGHT_DESCENDANT = 4
-    SIBLING = 5
-    COUSIN = 6
-    AUNT_OR_UNCLE = 7
-    ANCESTOR = 8
-    OTHER = 9
-
 class TreeNode:
     # forward reference class TreeNode as it has not been defined yet
     parent: 'TreeNode' = None
@@ -120,52 +107,6 @@ class TreeNode:
         # Print children recursively
         for child in self.children():
             child.print_report(depth + 1)
-            
-    def relationship_to(self, other: 'TreeNode') -> NodeRelationship:
-        """Returns the relationship of this node to another node.
-
-        Args:
-            other (TreeNode): The other node to compare this node to.
-
-        Returns:
-            str: The relationship of this node to the other node.
-        """
-        
-        if not self.is_root() and not other.is_root():
-            if TreeNode.equals(self.parent, other.parent):
-                return NodeRelationship.SIBLING
-            elif other.relationship_to(self.parent) == NodeRelationship.SIBLING:
-                return NodeRelationship.AUNT_OR_UNCLE
-            elif other.parent.relationship_to(self.parent) == NodeRelationship.SIBLING:
-                return NodeRelationship.COUSIN
-        
-        if not other.is_root():
-            if TreeNode.equals(self, other.parent):
-                return NodeRelationship.PARENT
-            
-        if not self.is_root():
-            if TreeNode.equals(self.parent, other):
-                if TreeNode.equals(self, other.left):
-                    return NodeRelationship.LEFT_CHILD
-                elif TreeNode.equals(self, other.right):
-                    return NodeRelationship.RIGHT_CHILD
-                else:
-                    # This is a handy way of testing that the tree structure is constructed correctly.
-                    raise Exception(f"Node {self.val}'s parent is {other.val}, but {other.val} does not have {self.val} as a child.")
-            # `other` is not a direct parent of `self`, but could be an ancestor
-            else:
-                for ancestor in self.ancestors():
-                    if TreeNode.equals(other, ancestor):
-                        if self.val < other.val:
-                            return NodeRelationship.LEFT_DESCENDANT
-                        # if not less than, must be greater than. assumes values are unique
-                        return NodeRelationship.RIGHT_DESCENDANT
-        
-        for descendant in self.descendants():
-            if TreeNode.equals(self, descendant):
-                return NodeRelationship.ANCESTOR
-
-        return NodeRelationship.OTHER
 
     def is_root(self) -> bool:
         """Returns whether this node is the root of the tree.
