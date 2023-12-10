@@ -99,6 +99,14 @@ class TreeNode:
         if (self.is_root()):
             print_str += "\t(ROOT)"
             
+        if not self.is_root():
+            if TreeNode.equals(self, self.parent.left):
+                print_str += "\t(LEFT CHILD)"
+            elif TreeNode.equals(self, self.parent.right):
+                print_str += "\t(RIGHT CHILD)"
+            if len(self.parent.children()) == 1:
+                print_str += "\t(ONLY CHILD)"
+                
         if self.is_leaf():
             print_str += "\t(LEAF)"
             
