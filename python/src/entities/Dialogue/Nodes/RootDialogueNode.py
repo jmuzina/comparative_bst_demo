@@ -1,21 +1,23 @@
+from ..OptionsDialogueNode import OptionsDialogueNode
 from ..DialogueNode import DialogueNode
-from typing import List, Callable#, Generic, TypeVar
+from entities.BinarySearchTree.TreeNode import TreeNode
+from typing import List
+from entities.Dialogue.Nodes.ParseBSTDialogueNode import ParseBSTDialogueNode
 
-class RootDialogueNode(DialogueNode):
+class RootDialogueNode(OptionsDialogueNode[TreeNode]):    
+    root: 'TreeNode' = None
+    
     def __init__(
         self, 
         options: List['DialogueNode'] = [], 
     ):
         super().__init__(
-            prompt='Root node', 
-            options=[], 
+            prompt='Welcome to Julie\'s BST project. Please select an option:',
+            options=[
+                ParseBSTDialogueNode(parent=self)
+            ],
             parent=None, 
-            on_input_callback=self.on_input_callback
         )
         
-    def validate_input(self, user_input: str) -> bool:
-        return super().validate_input(user_input)
-    
-    
-    def on_input_callback(self, user_input: str):
-        print(user_input)
+    def receive_input_from_child(self, child: DialogueNode, parsed_tree: TreeNode):
+        self.tree = parsed_tree
