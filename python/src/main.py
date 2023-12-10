@@ -1,6 +1,7 @@
 import sys
 from typing import List
 from entities.BinarySearchTree.TreeNode import TreeNode
+from entities.Dialogue.Nodes.RootDialogueNode import RootDialogueNode
 
 def preprocess_args(raw_args: list[str]) -> List[int]:
     """Validates and pre-processes the arguments provided to the program.
@@ -46,9 +47,12 @@ def preprocess_args(raw_args: list[str]) -> List[int]:
     return int_args
     
 def main():
-    args = preprocess_args(sys.argv[1:])
-    root = TreeNode.construct_node_from_list(args)
-    root.print_report()
+    #args = preprocess_args(sys.argv[1:])
+    #root = TreeNode.construct_node_from_list(args)
+    #root.print_report()
+    root_dialogue = RootDialogueNode()
+    root_dialogue.input_loop()
+    
 
 if __name__ == "__main__":
     main()
