@@ -14,6 +14,8 @@ export class InputComponent implements OnInit {
   @Input() min?: number;
   @Input() max?: number;
 
+  constructor(private _fb: FormBuilder) { }
+
   /** Key of formgroup containing the formarray of user-entered node values */
   controlsKey = 'node-values';
   /** Class of input fields for entering node values */
@@ -142,7 +144,7 @@ export class InputComponent implements OnInit {
       .sort((a: number, b: number) => a - b);
 
     // Construct a tree from the sorted list
-    const tree = TreeNode.constructNodeFromList(nodeValuesUniqueSorted);
+    const tree = new TreeNode(nodeValuesUniqueSorted);
 
     // Populate primeng-friendly node data
     if (tree) tree.populatePrimeNode();
@@ -158,6 +160,4 @@ export class InputComponent implements OnInit {
     // Add a single control to the page on first load, so user doesn't have to press 'add' to get started
     if (!this.tree) this.addControl();
   }
-
-  constructor(private _fb: FormBuilder) { }
 }

@@ -1,6 +1,6 @@
 import { TreeNode as PrimeTreeNode } from 'primeng/api';
 
-export const DEFAULT_TREE_NODE: PrimeTreeNode<TreeNode> = {
+export const DEFAULT_PRIME_TREE_NODE: PrimeTreeNode<TreeNode> = {
     label: '',
     data: undefined,
     children: []
@@ -10,52 +10,42 @@ export const DEFAULT_TREE_NODE: PrimeTreeNode<TreeNode> = {
  * Represents a node in a binary tree.
  */
 export class TreeNode {
+    /** Node's numeric content */
+    val: number;
+
+    parent?: TreeNode;
+
+    /** Left subtree */
+    left?: TreeNode;
+
+    /** Right subtree */
+    right?: TreeNode;
+
     /** Depth of the node in the tree. Root has depth of 0. */
     depth!: number;
 
     /** PrimeNG-compatibile treenode for org-chart style displaying */
     primeNode!: PrimeTreeNode<TreeNode>;
 
-    constructor(
-        /** Node's numeric content */
-        public val: number,
-        /** Parent node */
-        public parent?: TreeNode,
-        /** Left child */
-        public left?: TreeNode,
-        /** Right child */
-        public right?: TreeNode
-    ) {
-        this.depth = parent ? parent.depth + 1 : 0;
-        this.primeNode = DEFAULT_TREE_NODE;
-    }
-
-    /**
-     * Recursively constructs a `TreeNode` from a list of integers.
-     * @param nodeNumbers Sorted, unique list of integers to construct a `TreeNode` from.
-     * @param parent Parent node to set on this `TreeNode`. Defaults to `null`.
-     * @returns The root node of the constructed tree.
-     */
-    static constructNodeFromList(nodeNumbers: number[], parent?: TreeNode): TreeNode | null {
-        if (!nodeNumbers.length) return null;
+    constructor(nodeNumbers: number[], parent?: TreeNode) {
+        if (!nodeNumbers.length) throw new Error("Cannot construct a tree node from an empty list.");
 
         const rootIndex = Math.floor(nodeNumbers.length / 2);
         const rootNumber = nodeNumbers[rootIndex];
 
-        const leftSubtree = nodeNumbers.slice(0, rootIndex);
-        const rightSubtree = nodeNumbers.slice(rootIndex + 1);
+        const leftSubTree = nodeNumbers.slice(0, rootIndex);
+        const rightSubTree = nodeNumbers.slice(rootIndex + 1);
 
-        // Construct the root node
-        const retVal = new TreeNode(rootNumber, parent);
+        this.val = rootNumber;
+        this.parent = parent;
+        this.depth = parent ? parent.depth + 1 : 0;
+        this.primeNode = DEFAULT_PRIME_TREE_NODE;
 
-        // Recursively construct left and right subtrees
-        const leftChild = TreeNode.constructNodeFromList(leftSubtree, retVal);
-        if (leftChild) retVal.left = leftChild;
 
-        const rightChild = TreeNode.constructNodeFromList(rightSubtree, retVal);
-        if (rightChild) retVal.right = rightChild;
-    
-        return retVal;
+        if (leftSubTree.length) this.left = new TreeNode(leftSubTree, this);
+        if (rightSubTree.length) this.right = new TreeNode(rightSubTree, this);
+
+        this.populatePrimeNode();
     }
 
     /**
@@ -140,7 +130,7 @@ export class TreeNode {
     }
 
     populatePrimeNode(): void {
-        this.primeNode = this.toPrimeTreeNode() || DEFAULT_TREE_NODE;
+        this.primeNode = this.toPrimeTreeNode() || DEFAULT_PRIME_TREE_NODE;
     }
 
     /**
