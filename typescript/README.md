@@ -1,5 +1,7 @@
 # Typescript implementation of BST
 
+![Production build status](https://github.com/jmuzina/cis_524_project/actions/workflows/prod.yml/badge.svg)
+
 ![Tree View](./readme_assets/images/tree_view.png)
 
 ## Usage
