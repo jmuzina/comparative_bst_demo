@@ -1,0 +1,47 @@
+name: bst.jmuzina.io
+
+on:
+  release:
+    types:
+      - created
+
+jobs:
+  deploy:
+
+    name: Build
+    runs-on: ubuntu-latest
+    environment: production
+
+    defaults:
+      run:
+        working-directory: typescript
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Install Angular dependencies
+        run: npm ci
+
+      - name: Build Angular
+        run: npm run build:prod
+
+      - name: Archive build artifact
+        uses: actions/upload-artifact@main
+        with:
+          name: bst
+          path: typescript/dist/bst/browser
+
+      - name: Deploy build files
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.SSH_KEY_PASSPHRASE }}
+          port: ${{ secrets.DEPLOY_PORT }}
+          source: typescript/dist/bst/browser
+          target: ${{ secrets.DEPLOY_PATH }}/production
+          tar_tmp_path: /home/${{ secrets.DEPLOY_USERNAME }}/tmp/production
+          rm: true
+          timeout: 60s

@@ -2,8 +2,8 @@ import { Environment } from "../entities/Environment";
 
 export const environment: Environment = {
     production: true,
-    name: 'Julie Muzina - BST Demo',
+    name: 'BST Demo',
     githubRepository: {
-        url: 'https://github.com/jmuzina/cis_524_project'
+        url: 'https://github.com/jmuzina/comparative_bst_demo'
     }
 }
