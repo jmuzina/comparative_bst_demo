@@ -18,7 +18,7 @@
             styleClass="search-submit-button" 
             pTooltip="Search a node within the BST" 
             (click)="performSearch(liveSearchValue)" 
-            [disabled]="!liveSearchValue && liveSearchValue !== 0" 
+            [disabled]="liveSearchValue === appliedSearchValue" 
             icon="pi pi-search"
         />
     </div>

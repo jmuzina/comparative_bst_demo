@@ -13,4 +13,6 @@
 
 :host ::ng-deep .p-organizationchart {
     margin-top: 1rem;
+    width: 100%;
+    overflow: auto;
 }
