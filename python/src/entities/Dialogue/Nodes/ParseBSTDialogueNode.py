@@ -26,7 +26,7 @@ class ParseBSTDialogueNode(IntegerDialogueNode):
         user_input_as_ints: List[int] = super().transform_input_to_generic_type(user_input)
         user_input_unique_sorted: List[int] = sorted(set(user_input_as_ints))
         
-        return TreeNode.construct_node_from_list(user_input_unique_sorted)
+        return TreeNode(user_input_unique_sorted)
     
     def on_input_received(self, tree: TreeNode):
         """Validate the BST and pass it to the parent node

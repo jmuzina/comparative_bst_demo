@@ -1,5 +1,4 @@
 from typing import List
-from enum import Enum
 
 class TreeNode:
     # forward reference class TreeNode as it has not been defined yet
@@ -13,9 +12,9 @@ class TreeNode:
     # The depth of the node in the tree. Root has depth of 0.
     depth: int = 0
     
-    @staticmethod
-    def construct_node_from_list(node_numbers: List[int], parent: 'TreeNode' = None) -> 'TreeNode':
-        """Recursively constructs a TreeNode from a list of integers.
+    
+    def __init__(self, node_numbers: List[int], parent: 'TreeNode' = None) -> 'TreeNode':
+        """Constructs a TreeNode from a list of integers.
 
         Args:
             node_numbers (List[int]): Sorted, unique list of integers to construct a `TreeNode` from.
@@ -27,7 +26,7 @@ class TreeNode:
         
         # No integers are left. This means the parent node is a leaf node.
         if len(node_numbers) == 0:
-            return None
+            raise ValueError("Cannot construct a tree from an empty list of integers.")
         
         # Get the middle index of the list of integers
         root_index = len(node_numbers) // 2
@@ -37,19 +36,14 @@ class TreeNode:
         left_subtree = node_numbers[:root_index]
         right_subtree = node_numbers[root_index + 1:]
         
-        # The root node is the middle element of the list of integers.
-        retVal = TreeNode(
-            val=root_node_number, 
-            parent=parent,
-            depth=parent.depth + 1 if parent is not None else 0
-        )
+        self.val = root_node_number
+        self.parent = parent
+        self.depth = parent.depth + 1 if parent is not None else 0
         
-        # Recursively construct the left and right subtrees using the left and right halves of the list of integers
-        retVal.left = TreeNode.construct_node_from_list(left_subtree, retVal)
-        retVal.right = TreeNode.construct_node_from_list(right_subtree, retVal)
+        # Recursively construct the left and right subtrees
+        self.left = TreeNode(left_subtree, self) if len(left_subtree) > 0 else None
+        self.right = TreeNode(right_subtree, self) if len(right_subtree) > 0 else None
         
-        return retVal
-    
     @staticmethod
     def equals(a: 'TreeNode', b: 'TreeNode') -> bool:
         """Returns whether two treenodes are equal
@@ -198,19 +192,3 @@ class TreeNode:
         
         # Recursive case: Search the appropriate subtree
         return subtree.search(val)
-
-    def __init__(self, val: int, parent: 'TreeNode' = None, depth: int = 0, left: 'TreeNode' = None, right: 'TreeNode' = None):
-        """Constructs a new instance of `TreeNode`.
-
-        Args:
-            val (int): The integer value to store in the tree node.
-            parent (TreeNode, optional): Parent of this tree node. Defaults to None.
-            depth (int, optional): How deep in the tree this node is. Defaults to 0.
-            left (TreeNode, optional): Left child node. Defaults to None.
-            right (TreeNode, optional): Right child node. Defaults to None.
-        """
-        self.val = val
-        self.depth = depth
-        self.left = left
-        self.right = right
-        self.parent = parent
