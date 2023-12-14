@@ -1,7 +1,5 @@
 # Typescript implementation of BST
 
-![Production build status](https://github.com/jmuzina/cis_524_project/actions/workflows/prod.yml/badge.svg)
-
 ![Tree View](./readme_assets/images/tree_view.png)
 
 ## Usage
@@ -20,24 +18,26 @@ The Typescript implementation makes use of the following paradigms:
     - Some cross-cutting functionality is accessible throughout the application through dependency injection. Currently, this is just the `ToStringPipe` used to let html templates use `{{val | toString}}`.
 - Imperative: Within functions, control flow proceeds in an imperative fashion.
 
+## Key concepts
+Key concepts omitted for Typescript due to me accidentally having three languages. The Typescript implementation is purely here in case anybody is curious to see how it works in a web context, and to have another cool thing added to my website :)
 
-# Angular boilerplate details
+## Angular boilerplate details
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.6.
 
-## Install dependencies
+### Install dependencies
 
 Run `npm i` to install all Angular dependencies.
 
-## Development server
+### Development server
 
 Run `npx ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
 
-## Build
+### Build
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-## Further help
+### Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
