@@ -1,8 +1,9 @@
 from entities.Dialogue.DialogueNode import DialogueNode
 from typing import List
+from abc import ABC
 from util.str import safe_str_to_int
 
-class OptionsDialogueNode(DialogueNode[DialogueNode]):    
+class OptionsDialogueNode(DialogueNode[DialogueNode], ABC):    
     def __init__(
         self, 
         prompt: str = '', 

@@ -6,12 +6,30 @@ import sys
 T = TypeVar('T')
 
 class DialogueNode(ABC, Generic[T]):
+    
+    # Title of this dialogue node when it is listed as an option in an `OptionsDialogueNode`
     title: str = ""
+    # Prompt to display to the user when this node is active
     prompt: str = ""
+    
     parent: 'DialogueNode' = None
     exit_cmd: str = "exit"
     back_cmd: str = "back"
+
+    # Whether this node is currently being displayed to the user
     active: bool = False
+
+    def __init__(
+        self, 
+        title: str = '',
+        prompt: str = '', 
+        options: List['DialogueNode'] = [], 
+        parent: 'DialogueNode' = None,
+    ):
+        self.title = title
+        self.prompt = prompt
+        self.options = options
+        self.parent = parent
     
     def on_input_received(self, user_input: T):
         """Function to call on receiving valid input from the user
@@ -111,18 +129,7 @@ class DialogueNode(ABC, Generic[T]):
         # Child classes extend this functionality to validate further input.
         
         return False
-    
-    def __init__(
-        self, 
-        title: str = '',
-        prompt: str = '', 
-        options: List['DialogueNode'] = [], 
-        parent: 'DialogueNode' = None,
-    ):
-        self.title = title
-        self.prompt = prompt
-        self.options = options
-        self.parent = parent
 
     def __str__(self):
+        """Provide specific implementation for objects of this class, allowing `str()` calls to be more descriptive"""
         return self.prompt
